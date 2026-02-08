@@ -81,6 +81,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get result => 'Результат';
 
   @override
+  String get results => 'Результаты';
+
+  @override
   String get requiredField => 'Это поле обязательно';
 
   @override

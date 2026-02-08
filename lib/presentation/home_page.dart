@@ -8,7 +8,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -19,18 +18,6 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (user?.email != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 32.0),
-                child: Text(
-                  '${AppLocalizations.of(context).loggedAs} ${user!.email}',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
 
             ElevatedButton(
               onPressed: () => context.go('/categories'),
@@ -41,7 +28,15 @@ class HomePage extends StatelessWidget {
               child: Text(AppLocalizations.of(context).start),
             ),
             const SizedBox(height: 16),
-
+            ElevatedButton(
+              onPressed: () => context.go('/stat'),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(200, 50),
+                textStyle: const TextStyle(fontSize: 16),
+              ),
+              child: Text(AppLocalizations.of(context).results),
+            ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => context.go('/profile'),
               style: ElevatedButton.styleFrom(

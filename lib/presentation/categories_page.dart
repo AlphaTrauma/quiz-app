@@ -14,11 +14,16 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   late Future<List<Category>> _categoriesFuture;
+  bool _isInitialized = false;
 
   @override
-  void initState() {
-    super.initState();
-    _categoriesFuture = QuizService().fetchCategories();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_isInitialized) {
+      _categoriesFuture = QuizService().fetchCategories();
+      _isInitialized = true;
+    }
   }
 
   @override
@@ -38,20 +43,81 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   onTap: () async {
                     final questions = await QuizService().fetchQuestions(
                       cat.name,
-                      3,
+                      10,
                     );
-                    context.go(
-                      questionRoute,
-                      extra: {'questions': questions, 'categoryName': cat.name},
-                    );
+                    if (context.mounted) {
+                      context.go(
+                        questionRoute,
+                        extra: {
+                          'questions': questions,
+                          'categoryName': cat.name,
+                        },
+                      );
+                    }
                   },
                 );
               },
             );
           } else if (snapshot.hasError) {
             return Center(
-              child: Text(
-                '${AppLocalizations.of(context).errorMessage}: ${snapshot.error}',
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Colors.red.shade300,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      '${AppLocalizations.of(context).errorMessage}: ${snapshot.error}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () => context.go('/'),
+                        icon: const Icon(Icons.arrow_back),
+                        label: Text(
+                          AppLocalizations.of(context).back,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          setState(() {
+                            _categoriesFuture = QuizService().fetchCategories();
+                          });
+                        },
+                        icon: const Icon(Icons.refresh),
+                        label: Text(
+                          AppLocalizations.of(context).tryAgain,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {

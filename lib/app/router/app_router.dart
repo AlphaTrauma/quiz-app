@@ -11,7 +11,8 @@ import 'package:quizapp/presentation/login_page.dart';
 import 'package:quizapp/presentation/profile_page.dart';
 import 'package:quizapp/presentation/question_page.dart';
 import 'package:quizapp/presentation/register_page.dart';
-import 'package:quizapp/presentation/result_page.dart';
+import 'package:quizapp/presentation/result_page.dart'; 
+import 'package:quizapp/presentation/stat_page.dart';
 
 class AppRouter {
   late final GoRouter router;
@@ -38,8 +39,7 @@ class AppRouter {
           path: questionRoute,
           builder: (context, state) {
             final data = state.extra as Map<String, dynamic>;
-            final questions = (data['questions'] as List)
-                .cast<Question>();
+            final questions = (data['questions'] as List).cast<Question>();
             final categoryName = data['categoryName'] as String;
             return QuestionPage(
               questions: questions,
@@ -59,6 +59,7 @@ class AppRouter {
           path: profileRoute,
           builder: (context, state) => const ProfilePage(),
         ),
+        GoRoute(path: statRoute, builder: (context, state) => const StatPage()),
       ],
       redirect: (context, state) {
         final user = FirebaseAuth.instance.currentUser;

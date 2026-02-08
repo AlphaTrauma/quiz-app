@@ -24,26 +24,21 @@ class QuizService {
   }
 
   Future<List<Question>> fetchQuestions(String categoryName, int limit) async {
-  try {
-    final response = await _dio.get(
-      'https://quizapi.io/api/v1/questions',
-      queryParameters: {
-        'category': categoryName,
-        'limit': limit,
-      },
-      options: Options(headers: {'X-Api-Key': apiKey}),
-    );
+    try {
+      final response = await _dio.get(
+        'https://quizapi.io/api/v1/questions',
+        queryParameters: {'category': categoryName, 'limit': limit},
+        options: Options(headers: {'X-Api-Key': apiKey}),
+      );
 
-    if (response.data is! List) {
-      throw Exception('Unexpected response format: expected List, got ${response.data.runtimeType}');
+      final List<dynamic> data = response.data as List<dynamic>;
+      return data
+          .map((item) => Question.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } on DioException catch (e) {
+      throw Exception(
+        'Failed to load questions: ${e.response?.data ?? e.message}',
+      );
     }
-
-    final List<dynamic> data = response.data as List<dynamic>;
-    return data
-        .map((item) => Question.fromJson(item as Map<String, dynamic>))
-        .toList();
-  } on DioException catch (e) {
-    throw Exception('Failed to load questions: ${e.response?.data ?? e.message}');
   }
-}
 }

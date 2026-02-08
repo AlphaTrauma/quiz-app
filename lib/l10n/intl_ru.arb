@@ -24,6 +24,7 @@
   "viewProfile": "Профиль",
   "profile": "Профиль",
   "result": "Результат",
+  "results": "Результаты",
   "requiredField": "Это поле обязательно",
   "invalidEmail": "Неверный формат email",
   "noData": "Нет данных", 

@@ -23,6 +23,7 @@
   "viewProfile": "View Profile",
   "profile": "Profile",
   "result": "Result",
+  "results": "Results",
   "requiredField": "This field is required",
   "invalidEmail": "Invalid email format",
   "noData": "No data", 

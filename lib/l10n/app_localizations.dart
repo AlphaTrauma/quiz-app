@@ -242,6 +242,12 @@ abstract class AppLocalizations {
   /// **'Result'**
   String get result;
 
+  /// No description provided for @results.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get results;
+
   /// No description provided for @requiredField.
   ///
   /// In en, this message translates to:
